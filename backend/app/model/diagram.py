@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class DiagramRequest(BaseModel):
-    text: str
+    prompt: str
     diagram_type: str = "sequence"  # sequence, class, etc.
 
 
