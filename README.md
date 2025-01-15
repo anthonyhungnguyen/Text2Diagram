@@ -13,6 +13,42 @@ A web application that converts natural language text descriptions into diagrams
 - Real-time diagram preview
 - Clean, responsive UI
 
+## Architecture
+
+```mermaid
+flowchart TB
+    subgraph AWS Cloud
+        ALB[Application Load Balancer]
+        
+        subgraph "AWS Amplify"
+            React[React App]
+            Mermaid[Mermaid.js]
+        end
+        
+        subgraph "ECS Cluster"
+            Service[ECS Service]
+            subgraph "Container"
+                FastAPI
+            end
+        end
+        
+        Route53[Route 53]
+        ACM[Certificate Manager]
+    end
+    
+    subgraph "External Services"
+        Gemini[Google Gemini AI]
+    end
+    
+    User[Browser] --> Route53
+    Route53 --> Amplify
+    Route53 --> ALB
+    ALB --> Service
+    Service --> FastAPI
+    FastAPI --> Gemini
+    ACM --> ALB
+```
+
 ## Tech Stack
 
 Frontend:
@@ -28,7 +64,8 @@ Backend:
 - Python 3.10+
 
 Deployment:
-- AWS EC2 for hosting
+- AWS Amplify for frontend hosting
+- AWS ECS for backend container orchestration
 - AWS Route 53 for DNS management
 - AWS Certificate Manager for SSL
 - AWS Application Load Balancer
@@ -80,14 +117,16 @@ npm run dev
 
 ### Production Deployment
 
-1. The application is deployed on AWS EC2 instances:
+1. The application is deployed using AWS services:
 ```bash
-# Frontend: http://text2diagram.com
-# Backend API: http://api.text2diagram.com
+# Frontend: Hosted on AWS Amplify (http://text2diagram.com)
+# Backend API: Running on ECS (http://api.text2diagram.com)
 ```
 
 2. Infrastructure is managed through:
-- AWS Application Load Balancer for traffic distribution
+- AWS Amplify for automated frontend deployment
+- ECS Cluster for containerized backend services
+- Application Load Balancer for API traffic
 - Route 53 for domain management
 - Certificate Manager for SSL/TLS certificates
 
