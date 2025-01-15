@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import PromptInput from '@/pages/generate/components/PromptInput'
 import Result from '@/pages/generate/components/Result'
 

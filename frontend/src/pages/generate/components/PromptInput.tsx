@@ -19,12 +19,16 @@ const PromptInput: React.FC<PromptInputProps> = ({ onGenerate }) => {
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-                handleSubmit(e)
+                handleKeyDownSubmit()
             }
         }
         document.addEventListener('keydown', handleKeyDown)
         return () => document.removeEventListener('keydown', handleKeyDown)
     }, [prompt])
+
+    const handleKeyDownSubmit = () => {
+        handleSubmit(new Event('submit') as unknown as React.FormEvent)
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -58,11 +62,11 @@ const PromptInput: React.FC<PromptInputProps> = ({ onGenerate }) => {
     }
 
     return (
-        <div className="w-full">
-            <div className="max-w-3xl mx-auto">
-                <div className="bg-white/5 backdrop-blur-lg rounded-lg border border-white/10 p-6 shadow-2xl">
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="relative">
+        <div className='w-full'>
+            <div className='max-w-3xl mx-auto'>
+                <div className='bg-white/5 backdrop-blur-lg rounded-lg border border-white/10 p-6 shadow-2xl'>
+                    <form onSubmit={handleSubmit} className='space-y-6'>
+                        <div className='relative'>
                             <Textarea
                                 value={prompt}
                                 onChange={(e) => {
@@ -70,50 +74,51 @@ const PromptInput: React.FC<PromptInputProps> = ({ onGenerate }) => {
                                         setPrompt(e.target.value)
                                     }
                                 }}
-                                placeholder="Enter your diagram description here... (Ctrl/Cmd + Enter to generate)"
-                                className="min-h-[200px] resize-none bg-white/5 border-white/10 text-white placeholder:text-gray-400"
+                                placeholder='Enter your diagram description here... (Ctrl/Cmd + Enter to generate)'
+                                className='min-h-[200px] resize-none bg-white/5 border-white/10 text-white placeholder:text-gray-400'
                                 disabled={isLoading}
                             />
                             {prompt && (
                                 <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    className="absolute right-2 top-2 hover:bg-white/10 text-gray-400"
+                                    type='button'
+                                    variant='ghost'
+                                    size='sm'
+                                    className='absolute right-2 top-2 hover:bg-white/10 text-gray-400'
                                     onClick={() => setPrompt('')}
                                 >
-                                    <X className="h-4 w-4" />
+                                    <X className='h-4 w-4' />
                                 </Button>
                             )}
-                            <div className="absolute right-2 bottom-2 text-sm text-gray-400">
+                            <div className='absolute right-2 bottom-2 text-sm text-gray-400'>
                                 {prompt.length}/{MAX_CHARS}
                             </div>
                         </div>
 
                         {error && (
-                            <div className="bg-red-500/10 border-l-4 border-red-500 p-4 rounded">
-                                <p className="text-red-400">{error}</p>
+                            <div className='bg-red-500/10 border-l-4 border-red-500 p-4 rounded'>
+                                <p className='text-red-400'>{error}</p>
                             </div>
                         )}
 
                         <Button
-                            type="submit"
-                            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg"
+                            type='submit'
+                            className='w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg'
                             disabled={isLoading || !prompt.trim()}
                         >
                             {isLoading ? (
-                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                <Loader2 className='h-4 w-4 mr-2 animate-spin' />
                             ) : (
-                                <Sparkles className="h-4 w-4 mr-2" />
+                                <Sparkles className='h-4 w-4 mr-2' />
                             )}
                             {isLoading ? 'Generating...' : 'Generate Diagram'}
                         </Button>
                     </form>
                 </div>
 
-                <div className="mt-6 text-center text-sm text-gray-400">
+                <div className='mt-6 text-center text-sm text-gray-400'>
                     <p>
-                        Pro tip: Use Ctrl/Cmd + Enter to quickly generate your diagram
+                        Pro tip: Use Ctrl/Cmd + Enter to quickly generate your
+                        diagram
                     </p>
                 </div>
             </div>

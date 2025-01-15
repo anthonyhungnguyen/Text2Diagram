@@ -13,11 +13,8 @@ mermaid.initialize({
     securityLevel: 'loose',
     flowchart: {
         htmlLabels: true,
-        useMaxWidth: true
+        useMaxWidth: true,
     },
-    markdown: {
-        enabled: true
-    }
 })
 
 export const Diagram: React.FC<DiagramProps> = ({ prompt, diagram }) => {
@@ -31,14 +28,15 @@ export const Diagram: React.FC<DiagramProps> = ({ prompt, diagram }) => {
                     // Clean the diagram input
                     const cleanDiagram = diagram.trim().replace(/^\s+/gm, '')
                     const id = `diagram-${Math.random().toString(36).slice(2)}`
-                    
+
                     const { svg } = await mermaid.render(id, cleanDiagram)
                     if (diagramRef.current) {
                         diagramRef.current.innerHTML = svg
                     }
                 } catch (error) {
                     console.error('Failed to render diagram:', error)
-                    diagramRef.current.innerHTML = '<p class="text-red-500">Failed to render diagram</p>'
+                    diagramRef.current.innerHTML =
+                        '<p class="text-red-500">Failed to render diagram</p>'
                 }
             }
         }

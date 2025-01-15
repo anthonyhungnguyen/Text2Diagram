@@ -1,4 +1,3 @@
-import React from 'react'
 import { Layout } from '@/components/Layout'
 import Footer from './components/Footer'
 import { Routes, Route, Navigate } from 'react-router-dom'
