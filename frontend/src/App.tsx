@@ -1,25 +1,20 @@
-import { useState } from 'react'
-import Header from './components/Header'
-import PromptInput from './components/PromptInput'
-import Result from './components/Result'
+import React from 'react'
+import { Layout } from '@/components/Layout'
 import Footer from './components/Footer'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import GeneratePage from './pages/generate'
+import GalleryPage from './pages/gallery'
 
 function App() {
-    const [diagram, setDiagram] = useState<string | null>(null)
-
-    const handleGenerateDiagram = (diagram: string) => {
-        setDiagram(diagram)
-    }
-
     return (
-        <div className='min-h-screen bg-gray-50'>
-            <Header />
-            <main className='container mx-auto py-8'>
-                <PromptInput onGenerate={handleGenerateDiagram} />
-                <Result diagram={diagram} />
-            </main>
+        <Layout>
+            <Routes>
+                <Route path='/' element={<Navigate to='/generate' replace />} />
+                <Route path='/generate' element={<GeneratePage />} />
+                <Route path='/gallery' element={<GalleryPage />} />
+            </Routes>
             <Footer />
-        </div>
+        </Layout>
     )
 }
 

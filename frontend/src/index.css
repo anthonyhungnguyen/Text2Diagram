@@ -58,9 +58,12 @@
 }
 @layer base {
   * {
-    @apply border-border;
+    @apply border-white/10;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground text-white antialiased;
+  }
+  ::selection {
+    @apply bg-purple-500/30;
   }
 }
