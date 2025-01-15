@@ -7,6 +7,16 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+fastapi = "^0.115.6"
+gunicorn = "^23.0.0"
+uvicorn = "^0.34.0"
+mangum = "^0.19.0"
+requests = "^2.32.3"
+pydantic = "^2.10.5"
+py-mini-racer = "^0.6.0"
+pytest = "^8.3.4"
+moto = "^5.0.26"
+requests-mock = "^1.12.1"
 
 
 [build-system]
