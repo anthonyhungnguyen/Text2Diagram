@@ -7,10 +7,10 @@ on:
     branches: [ "main" ]
 
 env:
-  AWS_REGION: ap-southeast-1
-  ECR_REPOSITORY: text2diagram-api
-  ECS_SERVICE: text2diagram-service
-  ECS_CLUSTER: text2diagram-cluster
+  AWS_REGION: us-east-2
+  ECR_REPOSITORY: text2diagram/backend
+  ECS_SERVICE: backend
+  ECS_CLUSTER: Text2DigramCluster
 
 permissions:
   contents: read
