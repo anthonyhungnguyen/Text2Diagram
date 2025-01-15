@@ -1,5 +1,8 @@
 # Text2Diagram
 
+[![Backend Build](https://github.com/anthonyhungnguyen/Text2Diagram/workflows/Backend-CI/badge.svg)](https://github.com/anthonyhungnguyen/Text2Diagram/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A web application that converts natural language text descriptions into diagrams using AI. Currently supports sequence diagrams, flow charts, and state diagrams using Mermaid.js syntax.
 
 ## Features
