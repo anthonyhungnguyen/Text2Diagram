@@ -1,19 +1,16 @@
-import { useState } from 'react'
-import PromptInput from '@/pages/generate/components/PromptInput'
-import Result from '@/pages/generate/components/Result'
+import React from 'react'
+import { useLazyGenerateDiagramQuery } from '@/store/apiSlice'
+import PromptInput from './components/PromptInput'
+import Result from './components/Result'
 
-function Prompt() {
-    const [diagram, setDiagram] = useState<string | null>(null)
-
-    const handleGenerateDiagram = (diagram: string) => {
-        setDiagram(diagram)
-    }
+const GeneratePage: React.FC = () => {
+    const [fetch, { data, isFetching }] = useLazyGenerateDiagramQuery()
     return (
-        <>
-            <PromptInput onGenerate={handleGenerateDiagram} />
-            <Result diagram={diagram} />
-        </>
+        <div className='container mx-auto py-8'>
+            <PromptInput onGenerate={fetch} isFetching={isFetching} />
+            <Result data={data} isFetching={isFetching} />
+        </div>
     )
 }
 
-export default Prompt
+export default GeneratePage

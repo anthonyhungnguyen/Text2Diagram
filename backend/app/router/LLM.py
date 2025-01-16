@@ -1,10 +1,9 @@
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
-from app.model.diagram import DiagramRequest, DiagramResponse
+from app.model.diagram import DiagramResponse
 from app.service.LLM import LLM
 
 router = APIRouter(
-    prefix="/api/llm",
+    prefix="/api",
     tags=["LLM"],
     responses={404: {"description": "Not found"}},
 )
@@ -12,13 +11,12 @@ router = APIRouter(
 llm = LLM()
 
 
-@router.post("/generate", response_model=DiagramResponse)
-async def generate_diagram(request: DiagramRequest):
+@router.get("/generate", response_model=DiagramResponse)
+async def generate_diagram(prompt: str):
     try:
-        response = llm.generate_diagram(request.prompt)
+        response = llm.generate_diagram(prompt)
         return DiagramResponse(
-            diagram_code=response,
-            diagram_type=request.diagram_type,
+            diagram=response,
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

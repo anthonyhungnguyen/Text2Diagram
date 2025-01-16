@@ -1,16 +1,14 @@
 import React, { useEffect, useRef } from 'react'
 import mermaid from 'mermaid'
-
-// Importing required icons
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline'
 
 interface ResultProps {
-    diagram: string | null
+    data: { diagram: string } | undefined
+    isFetching: boolean
 }
 
-const Result: React.FC<ResultProps> = ({ diagram }) => {
+const Result: React.FC<ResultProps> = ({ data, isFetching }) => {
     const containerRef = useRef<HTMLDivElement>(null)
-
     const handleDownload = () => {
         if (containerRef.current) {
             const svg = containerRef.current.querySelector('svg')
@@ -30,7 +28,7 @@ const Result: React.FC<ResultProps> = ({ diagram }) => {
     }
 
     useEffect(() => {
-        if (diagram && containerRef.current) {
+        if (data?.diagram && containerRef.current) {
             // Clear previous renders
             if (containerRef.current.innerHTML) {
                 containerRef.current.innerHTML = ''
@@ -38,14 +36,24 @@ const Result: React.FC<ResultProps> = ({ diagram }) => {
 
             // Reset and reinitialize mermaid
             mermaid.initialize({ startOnLoad: false })
-            containerRef.current.innerHTML = diagram
+            containerRef.current.innerHTML = data.diagram
             mermaid.run({
                 nodes: [containerRef.current],
             })
         }
-    }, [diagram])
+    }, [data])
 
-    if (!diagram) return null
+    if (isFetching) {
+        return (
+            <div className='max-w-3xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-sm'>
+                <div className='flex justify-center items-center h-40'>
+                    <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600'></div>
+                </div>
+            </div>
+        )
+    }
+
+    if (!data) return null
 
     return (
         <div className='max-w-3xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-sm'>
@@ -65,7 +73,7 @@ const Result: React.FC<ResultProps> = ({ diagram }) => {
                 <div
                     ref={containerRef}
                     className='mermaid'
-                    key={diagram} // Force remount on diagram change
+                    key={data?.diagram} // Force remount on diagram change
                 />
             </div>
         </div>
