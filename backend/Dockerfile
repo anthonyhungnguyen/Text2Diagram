@@ -31,5 +31,5 @@ COPY . .
 # Expose port
 EXPOSE $PORT
 
-# Run the application using the wrapper script
-CMD ["poetry", "run", "python", "start.py"]
+# Change the CMD to use uvicorn directly
+CMD ["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

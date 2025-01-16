@@ -32,9 +32,3 @@ app.include_router(LLM.router)
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "message": "Text2Diagram API is running"}
-
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(app, host="0.0.0.0", port=8000)

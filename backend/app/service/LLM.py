@@ -20,16 +20,16 @@ class LLM:
 
         # Create the model
         generation_config = {
-            "temperature": float(os.getenv("TEMPERATURE")),
-            "top_p": float(os.getenv("TOP_P")),
-            "top_k": int(os.getenv("TOP_K")),
-            "max_output_tokens": int(os.getenv("MAX_OUTPUT_TOKENS")),
+            "temperature": 1,
+            "top_p": 0.95,
+            "top_k": 40,
+            "max_output_tokens": 8192,
             "response_mime_type": "text/plain",
         }
 
         self.logger.debug("Creating model with config: %s", generation_config)
         self.model = genai.GenerativeModel(
-            model_name=os.getenv("GEMINI_MODEL_NAME"),
+            model_name="gemini-2.0-flash-exp",
             generation_config=generation_config,
         )
         self.logger.info("LLM service initialized successfully")
