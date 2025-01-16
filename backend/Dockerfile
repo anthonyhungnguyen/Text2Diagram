@@ -23,7 +23,7 @@ RUN apt-get update \
 COPY pyproject.toml poetry.lock ./
 
 # Install dependencies
-RUN poetry install --no-root --no-dev
+RUN poetry add python-dotenv && poetry install --no-root --no-dev
 
 # Copy application code
 COPY . .
@@ -31,5 +31,5 @@ COPY . .
 # Expose port
 EXPOSE $PORT
 
-# Run the application with gunicorn
-CMD ["poetry", "run", "gunicorn", "main:app", "--workers", "2", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
+# Run the application using the wrapper script
+CMD ["poetry", "run", "python", "start.py"]
