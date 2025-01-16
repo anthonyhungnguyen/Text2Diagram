@@ -1,3 +1,3 @@
 #!/bin/bash
 
-poetry run uvicorn main:app --host 0.0.0.0 --port 8000
+poetry run gunicorn -c gunicorn_config.py main:app

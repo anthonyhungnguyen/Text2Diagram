@@ -31,5 +31,5 @@ COPY . .
 # Expose port
 EXPOSE $PORT
 
-# Change the CMD to use uvicorn directly
-CMD ["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Change the CMD to use gunicorn with config
+CMD ["poetry", "run", "gunicorn", "-c", "gunicorn_config.py", "main:app"]
