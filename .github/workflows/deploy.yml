@@ -50,7 +50,18 @@ jobs:
     - name: Download task definition
       run: |
         aws ecs describe-task-definition --task-definition ${{ env.ECS_SERVICE }} \
-        --query taskDefinition > task-definition.json
+        --query 'taskDefinition.{
+          family: family,
+          taskRoleArn: taskRoleArn,
+          executionRoleArn: executionRoleArn,
+          networkMode: networkMode,
+          containerDefinitions: containerDefinitions,
+          volumes: volumes,
+          placementConstraints: placementConstraints,
+          requiresCompatibilities: requiresCompatibilities,
+          cpu: cpu,
+          memory: memory
+        }' > task-definition.json
 
     - name: Update task definition with new image
       env:
@@ -61,10 +72,11 @@ jobs:
         sed -i "s|$ECR_REGISTRY/$ECR_REPOSITORY:[^\"]*|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" task-definition.json
         
         # Register new task definition
-        aws ecs register-task-definition \
+        NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
           --cli-input-json file://task-definition.json \
           --query 'taskDefinition.taskDefinitionArn' \
-          --output text > taskdefarn.txt
+          --output text)
+        echo $NEW_TASK_DEF_ARN > taskdefarn.txt
 
     - name: Update ECS service
       run: |
