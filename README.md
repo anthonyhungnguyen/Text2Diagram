@@ -107,7 +107,7 @@ poetry install
 1. Start the backend server:
 ```bash
 cd backend
-poetry run uvicorn app.main:app --reload
+poetry run gunicorn app.main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
 ```
 
 2. Start the frontend development server:
@@ -122,8 +122,8 @@ npm run dev
 
 1. The application is deployed using AWS services:
 ```bash
-# Frontend: Hosted on AWS Amplify (http://text2diagram.com)
-# Backend API: Running on ECS (http://api.text2diagram.com)
+# Frontend: Hosted on AWS Amplify (https://text2diagram.anthonyhungnguyen.com)
+# Backend API: Running on ECS (http://api.anthonyhungnguyen.com)
 ```
 
 2. Infrastructure is managed through:
