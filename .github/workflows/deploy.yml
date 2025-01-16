@@ -50,7 +50,7 @@ jobs:
     - name: Download task definition
       run: |
         aws ecs describe-task-definition --task-definition backend \
-          --query taskDefinition > task-definition.json
+          --query 'taskDefinition' > task-definition.json
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
@@ -58,9 +58,12 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        # Read task definition and update container image
+        # Remove unnecessary fields from task definition
+        jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)' task-definition.json > temp.json
+        # Update container image
         jq --arg IMAGE "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" \
-          '.containerDefinitions[0].image = $IMAGE' task-definition.json > temp.json && mv temp.json task-definition.json
+          '.containerDefinitions[0].image = $IMAGE' temp.json > task-definition.json
+        rm temp.json
         echo "task_definition=$(cat task-definition.json)" >> $GITHUB_OUTPUT
 
     - name: Register new task definition
