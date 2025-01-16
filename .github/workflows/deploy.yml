@@ -47,8 +47,29 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
+    - name: Download task definition
+      run: |
+        aws ecs describe-task-definition --task-definition ${{ env.ECS_SERVICE }} \
+        --query taskDefinition > task-definition.json
+
+    - name: Update task definition with new image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Update container image in task definition
+        sed -i "s|$ECR_REGISTRY/$ECR_REPOSITORY:[^\"]*|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" task-definition.json
+        
+        # Register new task definition
+        aws ecs register-task-definition \
+          --cli-input-json file://task-definition.json \
+          --query 'taskDefinition.taskDefinitionArn' \
+          --output text > taskdefarn.txt
+
     - name: Update ECS service
       run: |
-        aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} \
-                             --service ${{ env.ECS_SERVICE }} \
-                             --force-new-deployment
+        aws ecs update-service \
+          --cluster ${{ env.ECS_CLUSTER }} \
+          --service ${{ env.ECS_SERVICE }} \
+          --task-definition $(cat taskdefarn.txt) \
+          --force-new-deployment
