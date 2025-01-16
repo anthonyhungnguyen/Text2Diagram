@@ -28,9 +28,9 @@ flowchart TB
             Mermaid[Mermaid.js]
         end
         
-        subgraph "ECS Cluster"
+        subgraph "ECS with Fargate"
             Service[ECS Service]
-            subgraph "Container"
+            subgraph "Fargate Tasks"
                 FastAPI
             end
         end
@@ -57,7 +57,9 @@ flowchart TB
 Frontend:
 - React
 - TypeScript
+- Redux Toolkit
 - Tailwind CSS
+- shadcn/ui
 - Mermaid.js
 - Vite
 
@@ -68,10 +70,10 @@ Backend:
 
 Deployment:
 - AWS Amplify for frontend hosting
-- AWS ECS for backend container orchestration
-- AWS Route 53 for DNS management
-- AWS Certificate Manager for SSL
+- AWS ECS with Fargate for serverless container orchestration
 - AWS Application Load Balancer
+- GoDaddy for domain management
+- AWS Certificate Manager for SSL
 
 ## Getting Started
 
@@ -94,6 +96,7 @@ cd Text2Diagram
 ```bash
 cd frontend
 npm install
+npm install @reduxjs/toolkit react-redux @shadcn/ui
 ```
 
 3. Install backend dependencies:
@@ -123,15 +126,15 @@ npm run dev
 1. The application is deployed using AWS services with GoDaddy domain management:
 ```bash
 # Frontend: AWS Amplify deployment
-# Backend API: ECS with ALB
+# Backend API: ECS Fargate with ALB
 # Domain Management: GoDaddy DNS settings
 ```
 
 2. Infrastructure is managed through:
 - AWS Amplify for automated frontend deployment
-- ECS Cluster for containerized backend services
+- ECS Fargate for serverless container orchestration
 - Application Load Balancer for API traffic
-- GoDaddy for domain management
+- GoDaddy for domain management and DNS configuration
 - Certificate Manager for SSL/TLS certificates
 
 ## License
