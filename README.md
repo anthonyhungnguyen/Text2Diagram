@@ -35,7 +35,7 @@ flowchart TB
             end
         end
         
-        Route53[Route 53]
+        GoDaddy[GoDaddy DNS]
         ACM[Certificate Manager]
     end
     
@@ -43,9 +43,9 @@ flowchart TB
         Gemini[Google Gemini AI]
     end
     
-    User[Browser] --> Route53
-    Route53 --> Amplify
-    Route53 --> ALB
+    User[Browser] --> GoDaddy
+    GoDaddy --> Amplify
+    GoDaddy --> ALB
     ALB --> Service
     Service --> FastAPI
     FastAPI --> Gemini
@@ -120,17 +120,18 @@ npm run dev
 
 ### Production Deployment
 
-1. The application is deployed using AWS services:
+1. The application is deployed using AWS services with GoDaddy domain management:
 ```bash
-# Frontend: Hosted on AWS Amplify (https://text2diagram.anthonyhungnguyen.com)
-# Backend API: Running on ECS (http://api.anthonyhungnguyen.com)
+# Frontend: AWS Amplify deployment
+# Backend API: ECS with ALB
+# Domain Management: GoDaddy DNS settings
 ```
 
 2. Infrastructure is managed through:
 - AWS Amplify for automated frontend deployment
 - ECS Cluster for containerized backend services
 - Application Load Balancer for API traffic
-- Route 53 for domain management
+- GoDaddy for domain management
 - Certificate Manager for SSL/TLS certificates
 
 ## License
